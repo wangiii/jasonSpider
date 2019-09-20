@@ -5,13 +5,13 @@ from jasonSpider.JasonspiderItem import JasonspiderItem
 
 class CnblogsSpider(scrapy.Spider):
     name = 'cnblogs'
-    allowed_domains = ['cnblogs.com']
+    allowed_domains = ['www.cnblogs.com/']
 
     def start_requests(self):
-        url = 'https://cnblogs.com'
+        url = 'https://www.cnblogs.com/'
         page = getattr(self, 'page', 1)
         url = url + '/sitehome/p/' + str(page)
-        print(url)
+        # print(url)
         yield scrapy.Request(url, self.parse)
 
     def parse(self, response):
