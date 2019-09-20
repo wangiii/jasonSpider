@@ -16,21 +16,30 @@ class CleanPipeline(object):
         # 清洗 item['comment_count']
         comment = []
         for value in item['comment_count']:
-            comment.append(re.findall('[0-9]+', value)[0])
+            comment_count = re.findall('[0-9]+', value)[0]
+            comment.append(int(comment_count))
         item['comment_count'] = comment
 
         # 清洗 item['release_time']
         release = []
         for i in range(len(item['release_time'])):
             if i % 2 != 0:
-                release.append(re.findall('[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}', item['release_time'][i])[0])
+                release_time = re.findall('[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}', item['release_time'][i])[0]
+                release.append(release_time)
         item['release_time'] = release
 
         # 清洗 item['view_count']
         view = []
         for i in range(len(item['view_count'])):
-            view.append(re.findall('[0-9]+', item['view_count'][i])[0])
+            view_count = re.findall('[0-9]+', item['view_count'][i])[0]
+            view.append(int(view_count))
         item['view_count'] = view
+
+        # 清洗 item['recommended_count']
+        recommended = []
+        for i in range(len(item['recommended_count'])):
+            recommended.append(int(item['recommended_count'][i]))
+        item['recommended_count'] = recommended
 
         return item
 
