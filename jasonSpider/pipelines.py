@@ -8,6 +8,7 @@
 import json
 import codecs
 import re
+import pymysql.cursors
 
 class CleanPipeline(object):
 
@@ -57,3 +58,30 @@ class JsonPipeline(object):
     def close_spider(self, spider):
         print('写入完成，关闭文件')
         self.flie.close()
+
+class MySQLPipeline(object):
+    def __init__(self):
+        #链接数据库
+        self.connect = pymysql.connect(
+            host='127.0.0.1',
+            port=33060,
+            db='cnblogs',
+            user='homestead',
+            passwd='secret',
+            charset='utf8',
+            use_unicode=True
+        )
+        #拿到操作数据库的游标
+        self.cursor = self.connect.cursor()
+
+    def process_item(self, item, spider):
+        for k in range(len(item['title'])):
+            self.cursor.execute(
+                '''
+                insert into posts(title,author,release_time,comment_count,view_count,recommended_count)
+                VALUE (%s,%s,%s,%s,%s,%s)
+                ''', (str(item['title'][k]), str(item['author'][k]), str(item['release_time'][k]), int(item['comment_count'][k]), int(item['view_count'][k]), int(item['recommended_count'][k]))
+            )
+            #提交sql
+            self.connect.commit()
+        return item
