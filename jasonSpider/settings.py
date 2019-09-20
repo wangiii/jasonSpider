@@ -67,7 +67,6 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   # 'jasonSpider.pipelines.JasonspiderPipeline': 300,
     'jasonSpider.pipelines.CleanPipeline': 300,
     # 'jasonSpider.pipelines.JsonPipeline': 400,
     'jasonSpider.pipelines.MySQLPipeline': 400,
